@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>HORDE Yard | XRPL Zombie Collector World</title>
+  <title>HORDE Yard | Xaman Wallet Connect</title>
 
   <style>
     :root {
       --bg: #050507;
-      --panel: rgba(12, 14, 18, 0.88);
+      --panel: rgba(12, 14, 18, 0.9);
       --green: #39ff88;
       --purple: #b74cff;
       --orange: #ff8b22;
       --red: #ff3d3d;
       --text: #f4f7f3;
       --muted: #aeb7ad;
-      --line: rgba(255,255,255,.13);
+      --line: rgba(255,255,255,.14);
       --shadow: 0 20px 60px rgba(0,0,0,.55);
     }
 
@@ -136,8 +136,6 @@
         rgba(8,8,12,.86);
       border-radius: 28px;
       box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
     }
 
     .hero-grid {
@@ -203,12 +201,11 @@
       color: #07100b;
       background: var(--green);
       box-shadow: 0 0 28px rgba(57,255,136,.22);
-      transition: transform .15s ease, filter .15s ease;
     }
 
     .btn:hover {
-      transform: translateY(-1px);
       filter: brightness(1.08);
+      transform: translateY(-1px);
     }
 
     .btn.secondary {
@@ -236,14 +233,6 @@
       box-shadow: var(--shadow);
     }
 
-    .wallet-card {
-      border: 1px solid rgba(57,255,136,.28);
-      background: rgba(0,0,0,.38);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: inset 0 0 40px rgba(57,255,136,.05);
-    }
-
     .wallet-status {
       padding: 12px;
       border-radius: 16px;
@@ -253,6 +242,23 @@
       color: var(--green);
       margin-bottom: 12px;
       word-break: break-word;
+    }
+
+    .qr-box {
+      display: none;
+      margin-top: 14px;
+      text-align: center;
+      padding: 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+    }
+
+    .qr-box img {
+      width: min(280px, 88vw);
+      border-radius: 18px;
+      background: white;
+      padding: 10px;
     }
 
     .stat-grid {
@@ -282,12 +288,6 @@
       font-weight: 800;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
     .howto {
       margin-top: 16px;
       border: 1px solid rgba(57,255,136,.25);
@@ -304,9 +304,11 @@
       font-weight: 760;
     }
 
-    .howto li span {
-      color: var(--muted);
-      font-weight: 650;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
     }
 
     .yard-wrap {
@@ -360,13 +362,7 @@
       z-index: 2;
       background:
         linear-gradient(90deg, rgba(57,255,136,.05), transparent, rgba(183,76,255,.08)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.06),
-          rgba(255,255,255,.06) 2px,
-          transparent 2px,
-          transparent 34px
-        );
+        repeating-linear-gradient(0deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 2px, transparent 2px, transparent 34px);
       border-bottom: 4px solid rgba(0,0,0,.45);
     }
 
@@ -471,45 +467,6 @@
       to { transform: scale(1.1) translateY(-4px); opacity: 1; }
     }
 
-    .prize-shelf {
-      position: absolute;
-      left: 34%;
-      top: 26%;
-      z-index: 7;
-      width: 210px;
-      height: 115px;
-      border: 2px solid rgba(183,76,255,.42);
-      border-radius: 14px;
-      background: rgba(0,0,0,.35);
-      box-shadow: inset 0 0 25px rgba(183,76,255,.15);
-      display: none;
-    }
-
-    .prize-shelf.unlocked {
-      display: block;
-    }
-
-    .shelf-line {
-      height: 3px;
-      background: rgba(255,255,255,.18);
-      margin-top: 55px;
-    }
-
-    .prize {
-      position: absolute;
-      bottom: 12px;
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background: var(--green);
-      box-shadow: 0 0 18px rgba(57,255,136,.4);
-    }
-
-    .prize:nth-child(1) { left: 22px; background: var(--green); }
-    .prize:nth-child(2) { left: 72px; background: var(--purple); }
-    .prize:nth-child(3) { left: 122px; background: var(--orange); }
-    .prize:nth-child(4) { left: 168px; background: var(--red); }
-
     .zombie {
       position: absolute;
       z-index: 10;
@@ -517,7 +474,6 @@
       height: 118px;
       bottom: 16%;
       display: none;
-      transform-origin: bottom center;
       animation: bob 2.4s infinite ease-in-out;
     }
 
@@ -529,7 +485,7 @@
       width: 58px;
       height: 52px;
       margin: 0 auto;
-      border-radius: 45% 45% 42% 42%;
+      border-radius: 45%;
       background: linear-gradient(135deg, #62ff98, #1c8f53);
       border: 3px solid rgba(0,0,0,.35);
       position: relative;
@@ -558,29 +514,6 @@
       border-radius: 18px 18px 12px 12px;
       background: linear-gradient(135deg, #44225f, #1d102a);
       border: 3px solid rgba(0,0,0,.35);
-      position: relative;
-    }
-
-    .zombie .body::before,
-    .zombie .body::after {
-      content: "";
-      position: absolute;
-      width: 16px;
-      height: 46px;
-      top: 5px;
-      background: #42d979;
-      border-radius: 12px;
-      border: 2px solid rgba(0,0,0,.22);
-    }
-
-    .zombie .body::before {
-      left: -18px;
-      transform: rotate(18deg);
-    }
-
-    .zombie .body::after {
-      right: -18px;
-      transform: rotate(-18deg);
     }
 
     .zombie .legs {
@@ -646,28 +579,6 @@
     @keyframes boss {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
-    }
-
-    .rat {
-      position: absolute;
-      bottom: 11%;
-      z-index: 13;
-      font-size: 28px;
-      animation: ratRun 8s linear infinite;
-      opacity: .9;
-      display: none;
-    }
-
-    .rat.unlocked {
-      display: block;
-    }
-
-    @keyframes ratRun {
-      from { left: -10%; transform: scaleX(1); }
-      49% { transform: scaleX(1); }
-      50% { left: 110%; transform: scaleX(-1); }
-      99% { transform: scaleX(-1); }
-      to { left: -10%; transform: scaleX(1); }
     }
 
     .fog {
@@ -763,62 +674,6 @@
       background: rgba(57,255,136,.08);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 18px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      color: var(--muted);
-      font-weight: 750;
-    }
-
-    th {
-      color: var(--green);
-      background: rgba(57,255,136,.07);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-
-    td:first-child,
-    td:last-child {
-      color: var(--text);
-      font-weight: 950;
-    }
-
-    .pill {
-      display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      font-size: 12px;
-      font-weight: 900;
-      color: var(--green);
-    }
-
-    .event-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .footer-note {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.045);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     .toast {
       position: fixed;
       left: 50%;
@@ -844,6 +699,12 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .tiny {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
     @media (max-width: 860px) {
       .topbar-inner {
         align-items: flex-start;
@@ -863,14 +724,8 @@
 
       .hero-grid,
       .yard-wrap,
-      .grid,
-      .event-grid {
+      .grid {
         grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding: 18px;
-        border-radius: 22px;
       }
 
       .stat-grid {
@@ -886,28 +741,8 @@
         position: static;
       }
 
-      .prize-shelf {
-        left: 24%;
-        width: 190px;
-      }
-
-      .zombie {
-        width: 72px;
-        transform: scale(.86);
-      }
-
-      .z1 { left: 18%; }
-      .z2 { left: 42%; }
-      .z3 { left: 62%; }
-      .z4 { left: 30%; }
-
       .boss {
         font-size: 86px;
-      }
-
-      th, td {
-        padding: 10px 8px;
-        font-size: 12px;
       }
     }
   </style>
@@ -920,15 +755,13 @@
         <div class="brand-mark">🧟</div>
         <div>
           <div>HORDE Yard</div>
-          <small style="color: var(--muted); font-weight: 800;">XRPL Zombie Collector World</small>
+          <small style="color: var(--muted); font-weight: 800;">Xaman Wallet Connect</small>
         </div>
       </div>
 
       <nav class="nav">
         <button class="active" onclick="showSection('home', this)">Home</button>
         <button onclick="showSection('yard', this)">Play</button>
-        <button onclick="showSection('leaderboard', this)">Leaderboard</button>
-        <button onclick="showSection('events', this)">Events</button>
         <button onclick="showSection('coming', this)">Coming</button>
       </nav>
     </div>
@@ -941,28 +774,37 @@
           <div>
             <div class="kicker">HORDEonXRPL prototype</div>
             <h1>HORDE Yard</h1>
-            <div class="tagline">Your XRPL wallet becomes a living zombie world.</div>
+            <div class="tagline">Connect Xaman and wake the yard.</div>
             <p>
-              HORDE Yard is a creepy cozy collector game where players grow an undead yard by earning Horde Points.
-              More points unlock zombies, props, rare visitors, boss zombies, events, and future rewards.
+              HORDE Yard is a creepy cozy XRPL collector game where your Xaman wallet becomes a living zombie world.
             </p>
             <p>
-              This first version is a playable demo. Use the buttons to test how holding, collecting, adding liquidity,
-              and participating in events will grow the yard in the full XRPL version.
+              This version connects to Xaman using Supabase Edge Functions. After connection, your XRPL wallet address appears in the game.
             </p>
 
             <div class="actions">
-              <button class="btn" onclick="mockConnect()">Connect Xaman Wallet</button>
+              <button class="btn" onclick="connectXaman()">Connect Xaman Wallet</button>
               <a class="btn secondary" href="https://xaman.app/" target="_blank" rel="noopener">Get Xaman Wallet</a>
-              <button class="btn purple" onclick="showSectionById('yard')">Play Demo</button>
+              <button class="btn purple" onclick="showSectionById('yard')">Play</button>
             </div>
           </div>
 
-          <div class="wallet-card">
+          <div class="card">
             <div id="walletStatus" class="wallet-status">Wallet not connected</div>
             <p>
-              Don’t have an XRPL wallet yet? Get Xaman, create a wallet, then return here to connect.
+              Click Connect Xaman Wallet. Scan the QR code with Xaman or open the mobile link.
             </p>
+
+            <div id="qrBox" class="qr-box">
+              <p id="qrText">Waiting for Xaman...</p>
+              <img id="qrImage" alt="Xaman SignIn QR Code" />
+              <div class="actions" style="justify-content:center;">
+                <a id="mobileLink" class="btn secondary" href="#" target="_blank" rel="noopener">Open in Xaman</a>
+              </div>
+              <div class="tiny">
+                After signing, this page will update automatically.
+              </div>
+            </div>
 
             <div class="stat-grid">
               <div class="stat">
@@ -985,35 +827,28 @@
       <div class="howto">
         <h2>How to Play</h2>
         <ol>
-          <li>Connect your Xaman wallet. <span>Today this is a demo button.</span></li>
-          <li>Go to Play. <span>This opens your HORDE Yard.</span></li>
-          <li>Earn Horde Points. <span>Use the demo buttons to test upgrades.</span></li>
-          <li>Unlock the yard. <span>More points bring zombies, props, rare visitors, and bosses.</span></li>
-          <li>Share your yard. <span>Screenshot it or copy the share text.</span></li>
+          <li>Connect Xaman.</li>
+          <li>Approve the SignIn request.</li>
+          <li>Your XRPL wallet address appears in the game.</li>
+          <li>Today, use demo buttons to grow the yard.</li>
+          <li>Next upgrade: read real HORDE and NFT holdings.</li>
         </ol>
       </div>
 
-      <div class="grid" style="margin-top: 16px;">
+      <div class="grid">
         <div class="card">
           <h3>The Mission</h3>
-          <p>
-            Build the biggest, weirdest, most infected HORDE Yard.
-          </p>
+          <p>Build the biggest, weirdest, most infected HORDE Yard.</p>
         </div>
 
         <div class="card">
-          <h3>How You Grow</h3>
-          <p>
-            In the full version, your wallet activity will create Horde Points through holding HORDE, holding NFTs,
-            adding liquidity, trading, and joining events.
-          </p>
+          <h3>Wallet First</h3>
+          <p>The first real upgrade is wallet linking. After that, holdings can build the yard automatically.</p>
         </div>
 
         <div class="card">
-          <h3>Why It Matters</h3>
-          <p>
-            HORDE becomes more than a token. It becomes a community game layer with status, rewards, events, and collector identity.
-          </p>
+          <h3>What Comes Next</h3>
+          <p>HORDE balances, NFTs, LP boosts, leaderboard points, and real reward logic.</p>
         </div>
       </div>
     </section>
@@ -1021,70 +856,64 @@
     <section id="yard" class="section">
       <div class="howto" style="margin-bottom: 16px;">
         <h2>Play HORDE Yard</h2>
-        <p>
-          Today’s demo uses test buttons. In the real version, your Xaman wallet will automatically generate your Horde Points.
-        </p>
-        <p>
-          Your goal: earn points, wake the yard, unlock zombies, and climb the Horde.
+        <p id="playInstruction">
+          Connect Xaman first, then earn demo points to wake the yard.
         </p>
       </div>
 
       <div class="yard-wrap">
-        <div id="yardCapture" class="yard">
+        <div class="yard">
           <div class="sky-glow"></div>
           <div class="wall"></div>
           <div class="floor"></div>
 
           <div class="neon-sign">HORDE</div>
           <div class="neon-sign purple-sign">ROLLIES</div>
-
           <div class="dumpster"></div>
 
           <div id="barrel" class="barrel">
             <div class="fire"></div>
           </div>
 
-          <div id="shelf" class="prize-shelf">
-            <div class="prize"></div>
-            <div class="prize"></div>
-            <div class="prize"></div>
-            <div class="prize"></div>
-            <div class="shelf-line"></div>
-          </div>
-
           <div id="z1" class="zombie z1">
-            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="legs"><span></span><span></span></div>
           </div>
 
           <div id="z2" class="zombie z2">
-            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="legs"><span></span><span></span></div>
           </div>
 
           <div id="z3" class="zombie z3">
-            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="legs"><span></span><span></span></div>
           </div>
 
           <div id="z4" class="zombie z4">
-            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="legs"><span></span><span></span></div>
           </div>
 
           <div id="rare" class="rare">🧟‍♂️✨</div>
           <div id="boss" class="boss">🧟‍♂️</div>
-          <div id="rat" class="rat">🐀</div>
-
           <div class="fog"></div>
 
           <div class="yard-title">
             <strong id="yardLevel">Empty Yard</strong>
-            <span id="yardMessage">Earn Horde Points to wake the yard.</span>
+            <span id="yardMessage">Connect Xaman and earn Horde Points.</span>
           </div>
         </div>
 
         <aside class="controls">
           <div class="card">
-            <h2>Demo Controls</h2>
+            <h2>Horde Points</h2>
             <p>
-              Use these buttons to test the future wallet-powered game loop.
+              Current upgrade uses demo scoring. Real wallet reading comes next.
             </p>
 
             <div class="meter">
@@ -1126,126 +955,39 @@
           </div>
 
           <div class="card">
-            <h3>What These Buttons Mean</h3>
-            <p>
-              Later, these actions will come from real XRPL wallet activity.
-            </p>
-            <p>
-              Holding HORDE, holding NFTs, adding liquidity, trading, and joining events will grow the yard automatically.
-            </p>
-          </div>
-
-          <div class="card">
             <h3>Share</h3>
-            <p>Screenshot your yard or copy the share text below.</p>
+            <p>Screenshot your yard or copy the share text.</p>
             <button class="btn secondary" onclick="copyShareText()">Copy Share Text</button>
           </div>
         </aside>
       </div>
     </section>
 
-    <section id="leaderboard" class="section">
-      <div class="card">
-        <h2>Horde Leaderboard</h2>
-        <p>
-          Mock leaderboard for the prototype. Real ranking logic will connect to XRPL holder data in the next build.
-        </p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Wallet</th>
-              <th>HORDE</th>
-              <th>NFTs</th>
-              <th>LP</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>#1</td><td>rLORD...HORD</td><td>99,999</td><td>42</td><td>12</td><td>18,900</td></tr>
-            <tr><td>#2</td><td>rZOMB...XRPL</td><td>62,400</td><td>25</td><td>8</td><td>12,650</td></tr>
-            <tr><td>#3</td><td>rBITE...BRAI</td><td>31,500</td><td>14</td><td>4</td><td>7,820</td></tr>
-            <tr><td>#4</td><td>rINK...DEAD</td><td>14,200</td><td>8</td><td>2</td><td>4,410</td></tr>
-            <tr><td>#5</td><td>rNEW...YARD</td><td>2,600</td><td>2</td><td>0</td><td>1,120</td></tr>
-          </tbody>
-        </table>
-
-        <div class="footer-note">
-          Scoring idea: HORDE held + NFTs held + LP added + trading activity + event participation = Horde Points.
-        </div>
-      </div>
-    </section>
-
-    <section id="events" class="section">
-      <div class="event-grid">
-        <div class="card">
-          <span class="pill">Active</span>
-          <h3 style="margin-top: 12px;">Colour a Stone Contest</h3>
-          <p>Community art event. Color, post, tag, and enter for holder rewards.</p>
-          <p><strong>Reward:</strong> NFT / HORDE reward placeholder</p>
-        </div>
-
-        <div class="card">
-          <span class="pill">Upcoming</span>
-          <h3 style="margin-top: 12px;">Zombie Art Challenge</h3>
-          <p>Draw your own infected visitor. Winning designs may become future yard unlocks.</p>
-          <p><strong>Reward:</strong> Featured visitor placeholder</p>
-        </div>
-
-        <div class="card">
-          <span class="pill">Upcoming</span>
-          <h3 style="margin-top: 12px;">Horde Holder Reward Drop</h3>
-          <p>Top holders and active participants unlock surprise drops.</p>
-          <p><strong>Reward:</strong> Free drop placeholder</p>
-        </div>
-
-        <div class="card">
-          <span class="pill">Coming</span>
-          <h3 style="margin-top: 12px;">Community Coloring Event</h3>
-          <p>Low-barrier event for everyone to play, post, and join the horde.</p>
-          <p><strong>Reward:</strong> Community points placeholder</p>
-        </div>
-      </div>
-    </section>
-
     <section id="coming" class="section">
       <div class="card">
-        <h2>What’s Coming Next</h2>
+        <h2>Next Upgrade</h2>
         <p>
-          HORDE Yard starts as a simple demo and grows into a real XRPL-powered collector world.
+          After Xaman SignIn works, the next step is reading the connected XRPL account for NFTs and HORDE token balances.
         </p>
+        <p>
+          Then the yard will grow automatically from real holdings instead of demo buttons.
+        </p>
+      </div>
 
-        <div class="grid" style="margin-top: 14px;">
-          <div class="card">
-            <h3>Real Xaman Connect</h3>
-            <p>Connect wallet, verify address, and read real XRPL data.</p>
-          </div>
+      <div class="grid">
+        <div class="card">
+          <h3>Real XRPL NFTs</h3>
+          <p>Read wallet NFTs and count HORDE / Byron assets.</p>
+        </div>
 
-          <div class="card">
-            <h3>Real Holder Ranking</h3>
-            <p>Pull HORDE, NFT, LP, and event data into a live leaderboard.</p>
-          </div>
+        <div class="card">
+          <h3>Real HORDE Points</h3>
+          <p>Generate points from holdings, NFTs, LP, and event participation.</p>
+        </div>
 
-          <div class="card">
-            <h3>Reward Drops</h3>
-            <p>Top holders and active players earn free drops and yard unlocks.</p>
-          </div>
-
-          <div class="card">
-            <h3>More Yard Upgrades</h3>
-            <p>Rare visitors, hidden rooms, zombie props, and artist unlocks.</p>
-          </div>
-
-          <div class="card">
-            <h3>Rollies Integration</h3>
-            <p>HORDE Yard runs alongside other artist games inside the Rollies ecosystem.</p>
-          </div>
-
-          <div class="card">
-            <h3>Community Events</h3>
-            <p>Coloring contests, art challenges, holder missions, and seasonal rewards.</p>
-          </div>
+        <div class="card">
+          <h3>Living Yard</h3>
+          <p>Unlock zombies, props, rare visitors, boss zombies, and rewards from real wallet data.</p>
         </div>
       </div>
     </section>
@@ -1254,13 +996,22 @@
   <div id="toast" class="toast">Copied!</div>
 
   <script>
+    const SUPABASE_CREATE_SIGNIN_URL =
+      "https://jfoeizcbadtxcjuajdnf.supabase.co/functions/v1/xaman-create-signin";
+
+    const SUPABASE_CHECK_SIGNIN_URL =
+      "https://jfoeizcbadtxcjuajdnf.supabase.co/functions/v1/xaman-check-signin";
+
     let state = {
       connected: false,
+      account: "",
       points: 0,
       nfts: 0,
       lp: 0,
       horde: 0
     };
+
+    let signinTimer = null;
 
     function showSection(id, btn) {
       document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
@@ -1273,27 +1024,119 @@
     }
 
     function showSectionById(id) {
-      const buttons = Array.from(document.querySelectorAll(".nav button"));
       const labels = {
         home: "Home",
         yard: "Play",
-        leaderboard: "Leaderboard",
-        events: "Events",
         coming: "Coming"
       };
 
+      const buttons = Array.from(document.querySelectorAll(".nav button"));
       const btn = buttons.find(b => b.textContent.trim() === labels[id]);
       showSection(id, btn);
     }
 
-    function mockConnect() {
-      state.connected = true;
-      state.horde = 2600;
-      state.nfts = Math.max(state.nfts, 2);
-      state.points = Math.max(state.points, 420);
-      updateUI();
-      showSectionById("yard");
-      showToast("Wallet connected: rEXAMPLE...HORDE");
+    async function connectXaman() {
+      try {
+        setWalletStatus("Creating Xaman SignIn request...");
+        document.getElementById("qrBox").style.display = "block";
+        document.getElementById("qrText").textContent = "Creating QR code...";
+        document.getElementById("qrImage").removeAttribute("src");
+        document.getElementById("mobileLink").href = "#";
+
+        const response = await fetch(SUPABASE_CREATE_SIGNIN_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.uuid) {
+          console.error("Create SignIn error:", data);
+          throw new Error(data.error || "Could not create Xaman SignIn request.");
+        }
+
+        document.getElementById("qrImage").src = data.qr_png;
+        document.getElementById("mobileLink").href = data.next;
+        document.getElementById("qrText").textContent = "Scan with Xaman or open in Xaman.";
+
+        setWalletStatus("Waiting for Xaman approval...");
+
+        if (signinTimer) clearInterval(signinTimer);
+
+        signinTimer = setInterval(async () => {
+          await checkXamanSignin(data.uuid);
+        }, 2500);
+
+      } catch (error) {
+        console.error(error);
+        setWalletStatus("Wallet error: " + error.message);
+        showToast("Xaman connection error.");
+      }
+    }
+
+    async function checkXamanSignin(uuid) {
+      try {
+        const response = await fetch(
+          SUPABASE_CHECK_SIGNIN_URL + "?uuid=" + encodeURIComponent(uuid)
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.error("Check SignIn error:", data);
+          throw new Error(data.error || "Could not check SignIn.");
+        }
+
+        if (data.expired) {
+          clearInterval(signinTimer);
+          setWalletStatus("SignIn expired. Try connecting again.");
+          document.getElementById("qrText").textContent = "Expired. Click Connect Xaman Wallet again.";
+          return;
+        }
+
+        if (data.resolved && !data.signed) {
+          clearInterval(signinTimer);
+          setWalletStatus("SignIn rejected. Try again.");
+          document.getElementById("qrText").textContent = "Rejected. Click Connect Xaman Wallet again.";
+          return;
+        }
+
+        if (data.signed && data.account) {
+          clearInterval(signinTimer);
+
+          state.connected = true;
+          state.account = data.account;
+          state.points = Math.max(state.points, 420);
+          state.nfts = Math.max(state.nfts, 2);
+          state.horde = Math.max(state.horde, 2600);
+
+          document.getElementById("qrText").textContent = "Connected successfully.";
+          setWalletStatus("Wallet Connected: " + shortenAccount(data.account));
+
+          document.getElementById("playInstruction").textContent =
+            "Connected wallet: " + shortenAccount(data.account) + ". Use demo buttons for now. Real holdings come next.";
+
+          updateUI();
+          showSectionById("yard");
+          showToast("Xaman wallet connected.");
+        }
+
+      } catch (error) {
+        console.error(error);
+        clearInterval(signinTimer);
+        setWalletStatus("Check error: " + error.message);
+      }
+    }
+
+    function setWalletStatus(text) {
+      document.getElementById("walletStatus").textContent = text;
+    }
+
+    function shortenAccount(account) {
+      if (!account || account.length < 12) return account;
+      return account.slice(0, 6) + "..." + account.slice(-6);
     }
 
     function addPoints(amount) {
@@ -1307,14 +1150,14 @@
       state.nfts += 1;
       state.points += 250;
       updateUI();
-      showToast("NFT holding added. Yard upgraded.");
+      showToast("NFT holding added.");
     }
 
     function addLP() {
       state.lp += 1;
       state.points += 500;
       updateUI();
-      showToast("LP boost added. Big Horde upgrade.");
+      showToast("LP boost added.");
     }
 
     function resetYard() {
@@ -1335,10 +1178,6 @@
       document.getElementById("homeNfts").textContent = state.nfts;
       document.getElementById("homeHorde").textContent = state.horde.toLocaleString();
 
-      document.getElementById("walletStatus").textContent = state.connected
-        ? "Wallet Connected: rEXAMPLE...HORDE"
-        : "Wallet not connected";
-
       const pct = Math.min(100, (state.points / 2500) * 100);
       document.getElementById("meterFill").style.width = pct + "%";
 
@@ -1346,8 +1185,6 @@
       toggle("barrel", state.points >= 300);
       toggle("z2", state.points >= 500);
       toggle("z3", state.points >= 500);
-      toggle("shelf", state.points >= 500);
-      toggle("rat", state.points >= 500);
       toggle("rare", state.points >= 1000);
       toggle("z4", state.points >= 1000);
       toggle("boss", state.points >= 2500);
@@ -1378,7 +1215,7 @@
         yardMessage.textContent = "Your first zombie has arrived.";
       } else {
         yardLevel.textContent = "Empty Yard";
-        yardMessage.textContent = "Earn Horde Points to wake the yard.";
+        yardMessage.textContent = "Connect Xaman and earn Horde Points.";
       }
     }
 
@@ -1391,9 +1228,14 @@
     }
 
     async function copyShareText() {
+      const walletText = state.connected
+        ? "Connected Wallet: " + shortenAccount(state.account) + "\\n"
+        : "";
+
       const text =
         "I just entered HORDE Yard 🧟\\n\\n" +
         "Your XRPL wallet becomes a living zombie world.\\n\\n" +
+        walletText +
         "My Horde Points: " + state.points + "\\n" +
         "NFTs: " + state.nfts + "\\n" +
         "LP Adds: " + state.lp + "\\n\\n" +
@@ -1411,10 +1253,7 @@
       const toast = document.getElementById("toast");
       toast.textContent = message;
       toast.classList.add("show");
-
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 1800);
+      setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
     updateUI();
