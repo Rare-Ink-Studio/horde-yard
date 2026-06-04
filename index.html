@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>HORDE Yard | XRPL Zombie Collector World</title>
+
+  <style>
+    :root {
+      --bg: #050507;
+      --panel: rgba(12, 14, 18, 0.86);
+      --panel2: rgba(20, 10, 28, 0.82);
+      --green: #39ff88;
+      --purple: #b74cff;
+      --orange: #ff8b22;
+      --red: #ff3d3d;
+      --text: #f4f7f3;
+      --muted: #aeb7ad;
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(57,255,136,.14), transparent 26%),
+        radial-gradient(circle at 85% 22%, rgba(183,76,255,.18), transparent 24%),
+        radial-gradient(circle at 55% 100%, rgba(255,139,34,.12), transparent 30%),
+        #050507;
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding-bottom: 80px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(5,5,7,.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 950;
+      letter-spacing: .04em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(57,255,136,.28), rgba(183,76,255,.28));
+      border: 1px solid rgba(57,255,136,.45);
+      box-shadow: 0 0 25px rgba(57,255,136,.18);
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav button {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav button.active {
+      background: linear-gradient(135deg, rgba(57,255,136,.22), rgba(183,76,255,.22));
+      border-color: rgba(57,255,136,.55);
+      color: var(--green);
+    }
+
+    .hero {
+      margin-top: 20px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(57,255,136,.12), rgba(183,76,255,.11)),
+        rgba(8,8,12,.86);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(57,255,136,.22), transparent 65%);
+      pointer-events: none;
+    }
+
+    .kicker {
+      color: var(--green);
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(40px, 8vw, 86px);
+      line-height: .9;
+      letter-spacing: -.06em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(24px, 4vw, 38px);
+      letter-spacing: -.04em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 12px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+    }
+
+    .tagline {
+      font-size: clamp(18px, 3vw, 28px);
+      color: var(--text);
+      font-weight: 850;
+      margin: 16px 0;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 16px;
+      font-weight: 950;
+      cursor: pointer;
+      color: #07100b;
+      background: var(--green);
+      box-shadow: 0 0 28px rgba(57,255,136,.22);
+      transition: transform .15s ease, filter .15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    .btn.secondary {
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .btn.purple {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .btn.orange {
+      background: var(--orange);
+      color: #160900;
+    }
+
+    .wallet-card {
+      border: 1px solid rgba(57,255,136,.28);
+      background: rgba(0,0,0,.38);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: inset 0 0 40px rgba(57,255,136,.05);
+    }
+
+    .wallet-status {
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(57,255,136,.08);
+      border: 1px solid rgba(57,255,136,.18);
+      font-weight: 850;
+      color: var(--green);
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: var(--text);
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeIn .25s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .yard-wrap {
+      display: grid;
+      grid-template-columns: 1.4fr .6fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .yard {
+      height: min(68vh, 620px);
+      min-height: 480px;
+      border-radius: 28px;
+      border: 1px solid rgba(57,255,136,.24);
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 110%, rgba(255,139,34,.24), transparent 23%),
+        linear-gradient(to bottom, rgba(12,12,22,.9), rgba(2,2,5,.98));
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .yard::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: .38;
+      z-index: 0;
+    }
+
+    .sky-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 23% 15%, rgba(57,255,136,.18), transparent 18%),
+        radial-gradient(circle at 79% 20%, rgba(183,76,255,.22), transparent 22%);
+      z-index: 1;
+    }
+
+    .wall {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 62%;
+      z-index: 2;
+      background:
+        linear-gradient(90deg, rgba(57,255,136,.05), transparent, rgba(183,76,255,.08)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,.06),
+          rgba(255,255,255,.06) 2px,
+          transparent 2px,
+          transparent 34px
+        );
+      border-bottom: 4px solid rgba(0,0,0,.45);
+    }
+
+    .floor {
+      position: absolute;
+      left: -8%;
+      right: -8%;
+      bottom: 0;
+      height: 45%;
+      z-index: 3;
+      background:
+        radial-gradient(ellipse at center top, rgba(57,255,136,.08), transparent 50%),
+        repeating-linear-gradient(100deg, rgba(255,255,255,.045), rgba(255,255,255,.045) 2px, transparent 2px, transparent 46px),
+        #08070a;
+      transform: perspective(400px) rotateX(18deg);
+      transform-origin: top;
+    }
+
+    .neon-sign {
+      position: absolute;
+      left: 6%;
+      top: 8%;
+      z-index: 6;
+      padding: 10px 14px;
+      border: 2px solid rgba(57,255,136,.75);
+      border-radius: 16px;
+      color: var(--green);
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-shadow: 0 0 16px rgba(57,255,136,.95);
+      box-shadow: 0 0 35px rgba(57,255,136,.22), inset 0 0 18px rgba(57,255,136,.14);
+      animation: flicker 3s infinite;
+    }
+
+    .purple-sign {
+      left: auto;
+      right: 8%;
+      top: 12%;
+      border-color: rgba(183,76,255,.75);
+      color: #eac6ff;
+      text-shadow: 0 0 16px rgba(183,76,255,.95);
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 63%, 65%, 100% { opacity: 1; }
+      20%, 64% { opacity: .55; }
+    }
+
+    .dumpster {
+      position: absolute;
+      right: 7%;
+      bottom: 22%;
+      z-index: 7;
+      width: 150px;
+      height: 82px;
+      background: linear-gradient(135deg, #143c2a, #07180f);
+      border: 3px solid rgba(57,255,136,.35);
+      border-radius: 10px;
+      box-shadow: 0 12px 0 rgba(0,0,0,.35);
+    }
+
+    .dumpster::before {
+      content: "HODL";
+      position: absolute;
+      left: 18px;
+      top: 22px;
+      color: rgba(255,255,255,.55);
+      font-weight: 1000;
+      transform: rotate(-8deg);
+    }
+
+    .barrel {
+      position: absolute;
+      left: 12%;
+      bottom: 20%;
+      z-index: 8;
+      width: 70px;
+      height: 92px;
+      background: linear-gradient(90deg, #38180a, #842c12, #2b1008);
+      border-radius: 12px 12px 18px 18px;
+      border: 2px solid rgba(255,139,34,.45);
+      display: none;
+    }
+
+    .barrel.unlocked {
+      display: block;
+    }
+
+    .fire {
+      position: absolute;
+      left: 9px;
+      top: -44px;
+      width: 52px;
+      height: 54px;
+      background: radial-gradient(circle, #fff5a6 0 20%, #ff8b22 42%, #ff3d3d 70%, transparent 72%);
+      border-radius: 50% 50% 45% 45%;
+      filter: blur(.2px);
+      animation: flame .8s infinite alternate ease-in-out;
+    }
+
+    @keyframes flame {
+      from { transform: scale(.9) translateY(3px); opacity: .82; }
+      to { transform: scale(1.1) translateY(-4px); opacity: 1; }
+    }
+
+    .prize-shelf {
+      position: absolute;
+      left: 34%;
+      top: 26%;
+      z-index: 7;
+      width: 210px;
+      height: 115px;
+      border: 2px solid rgba(183,76,255,.42);
+      border-radius: 14px;
+      background: rgba(0,0,0,.35);
+      box-shadow: inset 0 0 25px rgba(183,76,255,.15);
+      display: none;
+    }
+
+    .prize-shelf.unlocked {
+      display: block;
+    }
+
+    .shelf-line {
+      height: 3px;
+      background: rgba(255,255,255,.18);
+      margin-top: 55px;
+    }
+
+    .prize {
+      position: absolute;
+      bottom: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(57,255,136,.4);
+    }
+
+    .prize:nth-child(1) { left: 22px; background: var(--green); }
+    .prize:nth-child(2) { left: 72px; background: var(--purple); }
+    .prize:nth-child(3) { left: 122px; background: var(--orange); }
+    .prize:nth-child(4) { left: 168px; background: var(--red); }
+
+    .zombie {
+      position: absolute;
+      z-index: 10;
+      width: 84px;
+      height: 118px;
+      bottom: 16%;
+      display: none;
+      transform-origin: bottom center;
+      animation: bob 2.4s infinite ease-in-out;
+    }
+
+    .zombie.unlocked {
+      display: block;
+    }
+
+    .zombie .head {
+      width: 58px;
+      height: 52px;
+      margin: 0 auto;
+      border-radius: 45% 45% 42% 42%;
+      background: linear-gradient(135deg, #62ff98, #1c8f53);
+      border: 3px solid rgba(0,0,0,.35);
+      position: relative;
+      box-shadow: 0 0 20px rgba(57,255,136,.18);
+    }
+
+    .zombie .head::before,
+    .zombie .head::after {
+      content: "";
+      position: absolute;
+      top: 19px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #080808;
+      box-shadow: 0 0 8px rgba(255,0,0,.6);
+    }
+
+    .zombie .head::before { left: 15px; }
+    .zombie .head::after { right: 15px; }
+
+    .zombie .body {
+      width: 64px;
+      height: 58px;
+      margin: -2px auto 0;
+      border-radius: 18px 18px 12px 12px;
+      background: linear-gradient(135deg, #44225f, #1d102a);
+      border: 3px solid rgba(0,0,0,.35);
+      position: relative;
+    }
+
+    .zombie .body::before,
+    .zombie .body::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 46px;
+      top: 5px;
+      background: #42d979;
+      border-radius: 12px;
+      border: 2px solid rgba(0,0,0,.22);
+    }
+
+    .zombie .body::before {
+      left: -18px;
+      transform: rotate(18deg);
+    }
+
+    .zombie .body::after {
+      right: -18px;
+      transform: rotate(-18deg);
+    }
+
+    .zombie .legs {
+      width: 54px;
+      height: 28px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .zombie .legs span {
+      width: 20px;
+      height: 32px;
+      background: #151515;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .z1 { left: 23%; }
+    .z2 { left: 46%; bottom: 13%; animation-delay: .4s; transform: scale(.92); }
+    .z3 { left: 64%; bottom: 15%; animation-delay: .8s; transform: scale(1.05); }
+    .z4 { left: 36%; bottom: 10%; animation-delay: 1.2s; transform: scale(.85); }
+
+    @keyframes bob {
+      0%, 100% { translate: 0 0; rotate: -1deg; }
+      50% { translate: 0 -10px; rotate: 2deg; }
+    }
+
+    .rare {
+      position: absolute;
+      right: 30%;
+      top: 34%;
+      z-index: 11;
+      display: none;
+      font-size: 66px;
+      filter: drop-shadow(0 0 18px rgba(183,76,255,.75));
+      animation: floaty 2.8s infinite ease-in-out;
+    }
+
+    .rare.unlocked {
+      display: block;
+    }
+
+    .boss {
+      position: absolute;
+      right: 8%;
+      bottom: 16%;
+      z-index: 12;
+      display: none;
+      font-size: 120px;
+      filter: drop-shadow(0 0 28px rgba(57,255,136,.45));
+      animation: boss 1.8s infinite ease-in-out;
+    }
+
+    .boss.unlocked {
+      display: block;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-16px) rotate(4deg); }
+    }
+
+    @keyframes boss {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .rat {
+      position: absolute;
+      bottom: 11%;
+      z-index: 13;
+      font-size: 28px;
+      animation: ratRun 8s linear infinite;
+      opacity: .9;
+      display: none;
+    }
+
+    .rat.unlocked {
+      display: block;
+    }
+
+    @keyframes ratRun {
+      from { left: -10%; transform: scaleX(1); }
+      49% { transform: scaleX(1); }
+      50% { left: 110%; transform: scaleX(-1); }
+      99% { transform: scaleX(-1); }
+      to { left: -10%; transform: scaleX(1); }
+    }
+
+    .fog {
+      position: absolute;
+      left: -20%;
+      right: -20%;
+      bottom: 0;
+      height: 42%;
+      z-index: 15;
+      background:
+        radial-gradient(ellipse at 20% 70%, rgba(255,255,255,.09), transparent 34%),
+        radial-gradient(ellipse at 65% 62%, rgba(183,76,255,.09), transparent 28%),
+        radial-gradient(ellipse at 80% 80%, rgba(57,255,136,.07), transparent 28%);
+      animation: fog 8s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes fog {
+      from { transform: translateX(-4%); opacity: .65; }
+      to { transform: translateX(4%); opacity: .9; }
+    }
+
+    .yard-title {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 30;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.52);
+      backdrop-filter: blur(10px);
+      max-width: 86%;
+    }
+
+    .yard-title strong {
+      display: block;
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .yard-title span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .controls {
+      position: sticky;
+      top: 78px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .meter {
+      height: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--purple), var(--orange));
+      border-radius: inherit;
+      transition: width .35s ease;
+    }
+
+    .unlock-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .unlock {
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      color: var(--muted);
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .unlock.on {
+      color: var(--green);
+      border-color: rgba(57,255,136,.35);
+      background: rgba(57,255,136,.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    th {
+      color: var(--green);
+      background: rgba(57,255,136,.07);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    td:first-child,
+    td:last-child {
+      color: var(--text);
+      font-weight: 950;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.045);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(80px);
+      z-index: 99;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.84);
+      border: 1px solid rgba(57,255,136,.35);
+      color: var(--green);
+      font-weight: 950;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: .25s ease;
+      text-align: center;
+      width: max-content;
+      max-width: 92vw;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 860px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .nav button {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+
+      .hero-grid,
+      .yard-wrap,
+      .grid,
+      .event-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .yard {
+        height: 560px;
+        min-height: 520px;
+      }
+
+      .controls {
+        position: static;
+      }
+
+      .prize-shelf {
+        left: 24%;
+        width: 190px;
+      }
+
+      .zombie {
+        width: 72px;
+        transform: scale(.86);
+      }
+
+      .z1 { left: 18%; }
+      .z2 { left: 42%; }
+      .z3 { left: 62%; }
+      .z4 { left: 30%; }
+
+      .boss {
+        font-size: 86px;
+      }
+
+      th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">🧟</div>
+        <div>
+          <div>HORDE Yard</div>
+          <small style="color: var(--muted); font-weight: 800;">XRPL Zombie Collector World</small>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" onclick="showSection('home', this)">Home</button>
+        <button onclick="showSection('yard', this)">Yard</button>
+        <button onclick="showSection('leaderboard', this)">Leaderboard</button>
+        <button onclick="showSection('events', this)">Events</button>
+        <button onclick="showSection('coming', this)">Coming</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app">
+    <section id="home" class="section active">
+      <div class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="kicker">HORDEonXRPL prototype</div>
+            <h1>HORDE Yard</h1>
+            <div class="tagline">Connect. Collect. Climb the Horde.</div>
+            <p>
+              A creepy cozy collector world where your XRPL wallet becomes a living zombie yard.
+              Hold, collect, participate, climb the leaderboard, and unlock more of the Horde.
+            </p>
+            <p>
+              Today’s version is a playable mockup. The next build connects real Xaman wallet login
+              and XRPL holder data.
+            </p>
+
+            <div class="actions">
+              <button class="btn" onclick="mockConnect()">Connect Xaman Wallet</button>
+              <a class="btn secondary" href="https://xaman.app/" target="_blank" rel="noopener">Get Xaman Wallet</a>
+              <button class="btn purple" onclick="showSectionById('yard')">Enter HORDE Yard</button>
+            </div>
+          </div>
+
+          <div class="wallet-card">
+            <div id="walletStatus" class="wallet-status">Wallet not connected</div>
+            <p>
+              No wallet yet? Download Xaman, create an XRPL wallet, then return here to connect.
+            </p>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <strong id="homeHorde">0</strong>
+                <span>HORDE Held</span>
+              </div>
+              <div class="stat">
+                <strong id="homeNfts">0</strong>
+                <span>NFTs Held</span>
+              </div>
+              <div class="stat">
+                <strong id="homePoints">0</strong>
+                <span>Horde Points</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top: 16px;">
+        <div class="card">
+          <h3>What is HORDE Yard?</h3>
+          <p>
+            HORDE Yard is a game-style collector dashboard. Instead of a boring wallet page,
+            the user’s holdings build an undead world.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Why it works</h3>
+          <p>
+            The more someone holds or participates, the more their world grows.
+            Zombies, props, rare visitors, and events become part of the flex.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Today’s Goal</h3>
+          <p>
+            Share a simple prototype that shows the direction: wallet activity turns into an evolving Horde scene.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="yard" class="section">
+      <div class="yard-wrap">
+        <div id="yardCapture" class="yard">
+          <div class="sky-glow"></div>
+          <div class="wall"></div>
+          <div class="floor"></div>
+
+          <div id="sign1" class="neon-sign">HORDE</div>
+          <div id="sign2" class="neon-sign purple-sign">ROLLIES</div>
+
+          <div id="dumpster" class="dumpster"></div>
+
+          <div id="barrel" class="barrel">
+            <div class="fire"></div>
+          </div>
+
+          <div id="shelf" class="prize-shelf">
+            <div class="prize"></div>
+            <div class="prize"></div>
+            <div class="prize"></div>
+            <div class="prize"></div>
+            <div class="shelf-line"></div>
+          </div>
+
+          <div id="z1" class="zombie z1">
+            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+          </div>
+
+          <div id="z2" class="zombie z2">
+            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+          </div>
+
+          <div id="z3" class="zombie z3">
+            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+          </div>
+
+          <div id="z4" class="zombie z4">
+            <div class="head"></div><div class="body"></div><div class="legs"><span></span><span></span></div>
+          </div>
+
+          <div id="rare" class="rare">🧟‍♂️✨</div>
+          <div id="boss" class="boss">🧟‍♂️</div>
+          <div id="rat" class="rat">🐀</div>
+
+          <div class="fog"></div>
+
+          <div class="yard-title">
+            <strong id="yardLevel">Empty Yard</strong>
+            <span id="yardMessage">Add Horde Points to wake the yard.</span>
+          </div>
+        </div>
+
+        <aside class="controls">
+          <div class="card">
+            <h2>Horde Points</h2>
+            <p>Your mock score controls what appears in the yard.</p>
+
+            <div class="meter">
+              <div id="meterFill" class="meter-fill"></div>
+            </div>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <strong id="points">0</strong>
+                <span>Points</span>
+              </div>
+              <div class="stat">
+                <strong id="nfts">0</strong>
+                <span>NFTs</span>
+              </div>
+              <div class="stat">
+                <strong id="lp">0</strong>
+                <span>LP Adds</span>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" onclick="addPoints(100)">Add 100 Points</button>
+              <button class="btn purple" onclick="addNFT()">Add NFT</button>
+              <button class="btn orange" onclick="addLP()">Add LP</button>
+              <button class="btn secondary" onclick="resetYard()">Reset Yard</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Unlocks</h3>
+            <div class="unlock-list">
+              <div id="u100" class="unlock"><span>100</span><span>First Zombie</span></div>
+              <div id="u300" class="unlock"><span>300</span><span>Fire Barrel</span></div>
+              <div id="u500" class="unlock"><span>500</span><span>More Horde</span></div>
+              <div id="u1000" class="unlock"><span>1000</span><span>Rare Visitor</span></div>
+              <div id="u2500" class="unlock"><span>2500</span><span>Boss Zombie</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Share</h3>
+            <p>Use your phone screenshot for now. Share text below:</p>
+            <button class="btn secondary" onclick="copyShareText()">Copy Share Text</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="leaderboard" class="section">
+      <div class="card">
+        <h2>Horde Leaderboard</h2>
+        <p>
+          Mock leaderboard for the prototype. Real ranking logic will connect to XRPL holder data in the next build.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Wallet</th>
+              <th>HORDE</th>
+              <th>NFTs</th>
+              <th>LP</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>#1</td><td>rLORD...HORD</td><td>99,999</td><td>42</td><td>12</td><td>18,900</td></tr>
+            <tr><td>#2</td><td>rZOMB...XRPL</td><td>62,400</td><td>25</td><td>8</td><td>12,650</td></tr>
+            <tr><td>#3</td><td>rBITE...BRAI</td><td>31,500</td><td>14</td><td>4</td><td>7,820</td></tr>
+            <tr><td>#4</td><td>rINK...DEAD</td><td>14,200</td><td>8</td><td>2</td><td>4,410</td></tr>
+            <tr><td>#5</td><td>rNEW...YARD</td><td>2,600</td><td>2</td><td>0</td><td>1,120</td></tr>
+          </tbody>
+        </table>
+
+        <div class="footer-note">
+          Scoring idea: HORDE held + NFTs held + LP added + trading activity + event participation = Horde Points.
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="section">
+      <div class="event-grid">
+        <div class="card">
+          <span class="pill">Active</span>
+          <h3 style="margin-top: 12px;">Colour a Stone Contest</h3>
+          <p>Community art event. Color, post, tag, and enter for holder rewards.</p>
+          <p><strong>Reward:</strong> NFT / HORDE reward placeholder</p>
+        </div>
+
+        <div class="card">
+          <span class="pill">Upcoming</span>
+          <h3 style="margin-top: 12px;">Zombie Art Challenge</h3>
+          <p>Draw your own infected visitor. Winning designs may become future yard unlocks.</p>
+          <p><strong>Reward:</strong> Featured visitor placeholder</p>
+        </div>
+
+        <div class="card">
+          <span class="pill">Upcoming</span>
+          <h3 style="margin-top: 12px;">Horde Holder Reward Drop</h3>
+          <p>Top holders and active participants unlock surprise drops.</p>
+          <p><strong>Reward:</strong> Free drop placeholder</p>
+        </div>
+
+        <div class="card">
+          <span class="pill">Coming</span>
+          <h3 style="margin-top: 12px;">Community Coloring Event</h3>
+          <p>Low-barrier event for everyone to play, post, and join the horde.</p>
+          <p><strong>Reward:</strong> Community points placeholder</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="coming" class="section">
+      <div class="card">
+        <h2>What’s Coming Next</h2>
+        <p>
+          HORDE Yard starts simple and grows with the community.
+        </p>
+
+        <div class="grid" style="margin-top: 14px;">
+          <div class="card">
+            <h3>Real Xaman Connect</h3>
+            <p>Connect wallet, verify address, and read real XRPL data.</p>
+          </div>
+
+          <div class="card">
+            <h3>Real Holder Ranking</h3>
+            <p>Pull HORDE, NFT, LP, and event data into a live leaderboard.</p>
+          </div>
+
+          <div class="card">
+            <h3>Reward Drops</h3>
+            <p>Top holders and active players earn free drops and yard unlocks.</p>
+          </div>
+
+          <div class="card">
+            <h3>More Yard Upgrades</h3>
+            <p>Rare visitors, hidden rooms, zombie props, and artist unlocks.</p>
+          </div>
+
+          <div class="card">
+            <h3>Rollies Integration</h3>
+            <p>HORDE Yard runs alongside the other games inside the Rollies ecosystem.</p>
+          </div>
+
+          <div class="card">
+            <h3>Community Events</h3>
+            <p>Coloring contests, art challenges, holder missions, and seasonal rewards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">Copied!</div>
+
+  <script>
+    let state = {
+      connected: false,
+      points: 0,
+      nfts: 0,
+      lp: 0,
+      horde: 0
+    };
+
+    function showSection(id, btn) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+
+      document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showSectionById(id) {
+      const buttons = Array.from(document.querySelectorAll(".nav button"));
+      const labels = {
+        home: "Home",
+        yard: "Yard",
+        leaderboard: "Leaderboard",
+        events: "Events",
+        coming: "Coming"
+      };
+
+      const btn = buttons.find(b => b.textContent.trim() === labels[id]);
+      showSection(id, btn);
+    }
+
+    function mockConnect() {
+      state.connected = true;
+      state.horde = 2600;
+      state.nfts = Math.max(state.nfts, 2);
+      state.points = Math.max(state.points, 420);
+      updateUI();
+      showToast("Wallet connected: rEXAMPLE...HORDE");
+    }
+
+    function addPoints(amount) {
+      state.points += amount;
+      state.horde += amount * 5;
+      updateUI();
+      showToast("+" + amount + " Horde Points");
+    }
+
+    function addNFT() {
+      state.nfts += 1;
+      state.points += 250;
+      updateUI();
+      showToast("NFT added. Yard upgraded.");
+    }
+
+    function addLP() {
+      state.lp += 1;
+      state.points += 500;
+      updateUI();
+      showToast("LP added. Big Horde boost.");
+    }
+
+    function resetYard() {
+      state.points = 0;
+      state.nfts = 0;
+      state.lp = 0;
+      state.horde = 0;
+      updateUI();
+      showToast("Yard reset.");
+    }
+
+    function updateUI() {
+      document.getElementById("points").textContent = state.points;
+      document.getElementById("nfts").textContent = state.nfts;
+      document.getElementById("lp").textContent = state.lp;
+
+      document.getElementById("homePoints").textContent = state.points;
+      document.getElementById("homeNfts").textContent = state.nfts;
+      document.getElementById("homeHorde").textContent = state.horde.toLocaleString();
+
+      document.getElementById("walletStatus").textContent = state.connected
+        ? "Wallet Connected: rEXAMPLE...HORDE"
+        : "Wallet not connected";
+
+      const pct = Math.min(100, (state.points / 2500) * 100);
+      document.getElementById("meterFill").style.width = pct + "%";
+
+      toggle("z1", state.points >= 100);
+      toggle("barrel", state.points >= 300);
+      toggle("z2", state.points >= 500);
+      toggle("z3", state.points >= 500);
+      toggle("shelf", state.points >= 500);
+      toggle("rat", state.points >= 500);
+      toggle("rare", state.points >= 1000);
+      toggle("z4", state.points >= 1000);
+      toggle("boss", state.points >= 2500);
+
+      unlock("u100", state.points >= 100);
+      unlock("u300", state.points >= 300);
+      unlock("u500", state.points >= 500);
+      unlock("u1000", state.points >= 1000);
+      unlock("u2500", state.points >= 2500);
+
+      const yardLevel = document.getElementById("yardLevel");
+      const yardMessage = document.getElementById("yardMessage");
+
+      if (state.points >= 2500) {
+        yardLevel.textContent = "Boss Horde Yard";
+        yardMessage.textContent = "The Lord of the Horde has entered the alley.";
+      } else if (state.points >= 1000) {
+        yardLevel.textContent = "Rare Visitor Yard";
+        yardMessage.textContent = "Something legendary is lurking in the fog.";
+      } else if (state.points >= 500) {
+        yardLevel.textContent = "Active Horde Yard";
+        yardMessage.textContent = "The yard is filling with undead energy.";
+      } else if (state.points >= 300) {
+        yardLevel.textContent = "Fire Barrel Yard";
+        yardMessage.textContent = "The horde found warmth. More are coming.";
+      } else if (state.points >= 100) {
+        yardLevel.textContent = "First Zombie Yard";
+        yardMessage.textContent = "Your first zombie has arrived.";
+      } else {
+        yardLevel.textContent = "Empty Yard";
+        yardMessage.textContent = "Add Horde Points to wake the yard.";
+      }
+    }
+
+    function toggle(id, on) {
+      document.getElementById(id).classList.toggle("unlocked", on);
+    }
+
+    function unlock(id, on) {
+      document.getElementById(id).classList.toggle("on", on);
+    }
+
+    async function copyShareText() {
+      const text =
+        "I just entered HORDE Yard 🧟\n\n" +
+        "Connect. Collect. Climb the Horde.\n\n" +
+        "My Horde Points: " + state.points + "\n" +
+        "NFTs: " + state.nfts + "\n" +
+        "LP Adds: " + state.lp + "\n\n" +
+        "Your XRPL wallet becomes a living zombie world.";
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Share text copied.");
+      } catch (e) {
+        showToast("Copy not available. Screenshot this yard.");
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
