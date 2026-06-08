@@ -126,6 +126,7 @@
       line-height: .95;
       color: var(--white);
       letter-spacing: .03em;
+      white-space: nowrap;
     }
 
     .brand-title span {
@@ -221,7 +222,7 @@
     }
 
     .hero-main {
-      min-height: 560px;
+      min-height: 540px;
       padding: 32px;
     }
 
@@ -275,17 +276,17 @@
     h1 {
       margin: 0;
       font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-      font-size: clamp(72px, 13vw, 162px);
-      line-height: .78;
-      letter-spacing: -.045em;
+      font-size: clamp(70px, 10.8vw, 128px);
+      line-height: .86;
+      letter-spacing: -.035em;
       text-transform: uppercase;
       color: var(--white);
       text-shadow: 4px 4px 0 rgba(215,25,32,.38);
+      white-space: nowrap;
     }
 
     h1 span {
       color: var(--red2);
-      display: block;
     }
 
     h2 {
@@ -318,10 +319,10 @@
     }
 
     .ledger {
-      margin-top: 20px;
+      margin-top: 18px;
       font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
       color: var(--white);
-      font-size: clamp(30px, 4.2vw, 50px);
+      font-size: clamp(28px, 3.8vw, 46px);
       line-height: 1;
       letter-spacing: .015em;
       text-transform: uppercase;
@@ -1136,7 +1137,8 @@
       .z4 { left: 30%; }
 
       h1 {
-        font-size: clamp(66px, 22vw, 116px);
+        font-size: clamp(58px, 18vw, 108px);
+        white-space: nowrap;
       }
 
       .ledger {
@@ -1155,6 +1157,21 @@
       .actions {
         display: grid;
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: clamp(50px, 16vw, 74px);
+      }
+
+      .brand-title {
+        font-size: 22px;
+      }
+
+      .brand-sub {
+        font-size: 9px;
+        letter-spacing: .11em;
       }
     }
   </style>
@@ -1189,9 +1206,7 @@
           <div class="hero-content">
             <div class="kicker">A dark community movement created by Byron</div>
 
-            <h1>
-              <span>$H</span>ORDE
-            </h1>
+            <h1><span>$H</span>ORDE</h1>
 
             <div class="ledger">
               Black • Red • White<br>
